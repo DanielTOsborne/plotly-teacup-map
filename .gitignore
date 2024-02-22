@@ -1,0 +1,16 @@
+**.old
+**.new
+**~
+**.swp
+**.swn
+**.tmp
+**.bak
+**.bak?
+**.bak.*
+**.out
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
+

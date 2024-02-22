@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<base href="/" />
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Reservoir Current Conditions - U.S. Army Corps of Engineers Sacramento Water Control Data System</title>
+		<meta name="Description" content="Reservoir Current Conditions - U.S. Army Corps of Engineers Sacramento Water Control Data System" />
+		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/css/bootstrap.min.css" integrity="sha512-oc9+XSs1H243/FRN9Rw62Fn8EtxjEYWHXRvjS43YtueEewbS6ObfXcJNyohjHqVKFPoXXUxwc+q1K7Dee6vv9g==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+		<link rel="stylesheet" href="css/bootstrap.slim.css" /> <!-- Alternative for bootstrap -->
+		<link rel="stylesheet" href="css/body.css" />
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/breadcrumbs.css" />
+		<link rel="stylesheet" href="css/jumpMenu.css" />
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="https://d3js.org/d3.v4.min.js" integrity="sha384-1EOYqz4UgZkewWm70NbT1JBUXSQpOIS2AaJy6/evZH+lXOrt9ITSJbFctNeyBoIJ" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="https://cdn.plot.ly/plotly-2.27.0.min.js" integrity="sha384-Hl48Kq2HifOWdXEjMsKo6qxqvRLTYqIGbvlENBmkHAxZKIGCXv43H6W1jA671RzC" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="js/mapapi.js"></script>
+
+		<!--
+			The template files can be loaded via SSI, or javascript.
+			To load them via SSI, remove the following two <script> elements.
+		-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+		<script defer>
+			// When the document has loaded pull in the page header and footer skins
+			$(document).ready(function () {
+				// If files weren't already included via SSI, load via JS
+				if( typeof GOV_BANNER === typeof undefined ) {
+					// Change the v= to a different number to force clearing the cached version on the client browser
+					$('#header').load('/SPK.header.html');
+					$('#sidebar').load('/SPK.sidebar.html');
+					$('#footer').load('/SPK.footer.html');
+				}
+			});
+		</script>
+
+		<style type="text/css">
+			#map > div > div > svg:nth-child(2) > g.draglayer.cursor-crosshair > g.xy {
+				display: none;
+			}
+			.subplot {
+				background-color: grey;
+			}
+
+			.ca {
+				width: 7.6in; height: 10.25in;
+			}
+			.gb, .uc {
+				width: 10.25in; height: 7.6in;
+			}
+			.testing {
+				/* display: none; */
+				border: 1px solid red;
+				padding: 3px;
+			}
+			.testing::before {
+				content: "Testing";
+				font-weight: bold;
+			}
+
+			@media print {
+				html, body {
+					width: 8in;
+					height: 10.25in;
+					margin: 0 !important; 
+					padding: 0 !important;
+					overflow: hidden;
+				}
+				html.landscape, html.landscape body {
+					height: 7.75in;
+					width: 10.5in;
+				}
+				#header, #footer, #sidebar, #breadcrumbs, .box-header-striped, .modebar-container, #controls {
+					display: none;
+				}
+				.box-content {
+					margin: 0;
+					display: content;
+				}
+				#page-container {
+					visibility: collapse !important;
+				}
+				#map {
+					visibility: visible !important;
+					overflow-y: visible;
+				}
+
+				/* These make sure the map attribution is visible when printed/saved as PDF */
+				.js-plotly-plot .plotly .mapboxgl-ctrl-attrib.mapboxgl-compact { border-radius: 3px; }
+				.js-plotly-plot .plotly .mapboxgl-ctrl-attrib.mapboxgl-compact .mapboxgl-ctrl-attrib-inner { display: block; }
+				.js-plotly-plot .plotly .mapboxgl-ctrl-bottom-right > .mapboxgl-ctrl-attrib.mapboxgl-compact::after { display: none; }
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="loader"><div class="wheel"></div>Loading...</div>
+		<div id="page-container">
+			<header id="header" class="sticky">
+<!--#include virtual="/SPK.header.html" -->
+			</header>
+			<div class="page-wrap">
+				<div class="container-fluid">
+					<div id="breadcrumbs">
+						<span>
+							<a href="/index.html" class="skin-breadcrumb"><span class="fa fa-home"></span></a>
+							<span style="text-decoration: none"> / </span>
+							<span style="text-decoration: none">
+								<span>Data</span>
+							</span>
+							<span style="text-decoration: none"> / </span>
+							<span style="text-decoration: none">
+								<span>Reports</span>
+							</span>
+							<span style="text-decoration: none"> / </span>
+							<span style="text-decoration: none">
+								<span>Current Conditions</span>
+							</span>
+						</span>
+					</div>
+					<div class="page-content">
+						<sidebar id="sidebar" style="display: none;">
+<!--#include virtual="/SPK.sidebar.html" -->
+						</sidebar>
+						<div id="topPane" class="col-md backend-cp-collapsible">
+							<!-- Page Content Here -->
+							<div class="box-usace">
+								<h2 class="box-header-striped">
+									<span class="titleLabel title">Current Conditions</span>
+									<span class="rss"></span>
+								</h2>
+								<div class="box-content" style="background-color:white;margin:auto">
+									<div class="content">
+										<div id="controls">
+											<label for="location">Location:</label>
+											<select id="location" onchange="buildPlotlyMap('map');">
+												<option value="ca">California</option>
+												<option value="gb">Great Basin</option>
+												<option value="uc">Upper Colorado</option>
+											</select>
+											<label for="date">Date:</label>
+											<input id="date" type="date" onchange="buildPlotlyMap('map');"/>
+											<span class="testing">
+												<label for="mapstyle">Map style:</label>
+												<select id="mapstyle" onchange="setMapStyle(this, 'map');">
+													<option value="geo">Geographical</option>
+													<option value="mapbox_open-street-map" selected>Open Street Map</option>
+													<option value="mapbox_carto-positron">Carto Positron</option>
+													<option value="mapbox_carto-darkmatter">Carto Darkmatter</option>
+													<option value="mapbox_layer_USGSImageryOnly">USGS Imagery</option>
+													<option value="mapbox_layer_USGSHydroCached">USGS Hydro</option>
+													<option value="mapbox_layer_USGSImageryTopo">USGS Imagery Topo</option>
+													<option value="mapbox_layer_USGSShadedReliefOnly">USGS Shaded Relief</option>
+													<option value="mapbox_layer_USGSTopo">USGS Topographical</option>
+													<option value="mapbox_arcgis_arcgis/oceans">ArcGIS Oceans</option>
+													<option value="mapbox_arcgis_arcgis/outdoor">ArcGIS Outdoor</option>
+													<option value="mapbox_arcgis_arcgis/terrain">ArcGIS Terrain</option>
+													<option value="mapbox_arcgis_arcgis/human-geography">ArcGIS Human Geography</option>
+													<option value="mapbox_arcgis_arcgis/light-gray">ArcGIS Light Gray</option>
+													<option value="mapbox_arcgis_arcgis/dark-gray">ArcGIS Dark Gray</option>
+													<option value="mapbox_arcgis_arcgis/topographic">ArcGIS Topographic</option>
+												</select>
+											</span>
+										</div>
+										<!-- Box Content Here -->
+										<div id="map" style="background-color: white;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<button id="returnTop" title="Return to Top of Page">Top</button>
+				</div>
+			</div>
+		</div>
+		<footer id="footer">
+<!--#include virtual="/SPK.footer.html" -->
+		</footer>
+	</body>
+</html>

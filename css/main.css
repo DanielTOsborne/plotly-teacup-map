@@ -1,0 +1,77 @@
+/* 2012 01 10 Mike Neilson
+ *
+ * intial creation of the body CSS.
+ * should a page need something slightly different
+ * include a <style> section after CSS files are important
+ * that will overwrite this file.
+ *
+ *
+ *
+ */
+
+img {
+	border: none;
+}
+
+#loader {
+	box-sizing: initial;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 10em;
+	height: auto;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -1em;
+	margin-left: -5em;
+	padding: 1em;
+	background-color: grey;
+	z-index: 100;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
+/* https://www.w3schools.com/howto/howto_css_loader.asp */
+.wheel {
+	border: 5px solid #f3f3f3; /* Light grey */
+	border-top: 5px solid #3498db; /* Blue */
+	border-radius: 50%;
+	box-sizing: inherit;
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	animation: spin 2s linear infinite;
+	margin-right: 1em;
+	margin-left: -1em;
+}
+  
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+.reporttable {
+	border: thin inset black;
+	z-index: 40;
+	border-collapse: collapse;
+}
+
+.reporttable td,
+.reporttable tr,
+.reporttable th {
+	border: thin inset black;
+	padding: 0.25em 1em;
+	margin: 0px;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+.reporttable img {
+	text-align: center;
+}
+
+#plotmenu {
+	font-size: 90%;
+	font-style: italic;
+}

@@ -1,0 +1,40 @@
+							<link rel="stylesheet" href="/css/SPK.sidebar.css"/>
+							<div id="leftPane" class="col-md-3 backend-cp-fixed" style="width: 22em;">
+								<div class="box-usace">
+									<h2 class="box-header-striped">
+										<span class="title">Data Quick Access Menu</span>
+										<span class="rss"></span>
+									</h2>
+									<div id="ContentPane" class="box-content">
+										<div id="dnn_ctr2497_ModuleContent" class="DNNModuleContent ModAccordionMenuC">
+											<div id="dnn_ctr2497_View_AccordionContainer" class="AccordionContainer">
+												<div class="ac-jump-menu-wrapper ac-hide ac-show-mobile-only">
+													<div class="ac-jump-menu-success alert alert-success">
+														<i class="fas fa-spinner fa-spin"></i>Redirecting...
+													</div>
+													<select class="ac-jump-menu" id="mobilejumpmenu">
+														<option data-new-window="False" value="">Select...</option>
+														<option data-new-window="False" value="/reports/current_conditions.html">Current Conditions</option>
+													</select>
+												</div>
+												<ul class="acAccordionMenu acResponsive ac-hide ac-hide-mobile-only ">
+													<li class="usaceAccordionMenuListItem">
+														<div class="usaceAccordionRootNode">
+															<div class="lvl0 listItem">
+																<a href="/reports/current_conditions.html" target="_self" tabindex="0">Hourly Reports</a>
+															</div>
+														</div>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<script>
+								const mobilejumpmenu=document.getElementById("mobilejumpmenu");
+								mobilejumpmenu.addEventListener("change", function(){
+									let url=this.value
+									window.location=url
+								});
+							</script>
