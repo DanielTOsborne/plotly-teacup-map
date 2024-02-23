@@ -18,14 +18,14 @@ const PLOT_ID = "map";
 const SUBPLOT_WIDTH = 0.075;
 const SUBPLOT_HEIGHT = 0.10;
 
-const ASPECT_RATIO_PORTRAIT = {w: 1, h: 1.348684};  // Aspect ratio for map (so it prints on 8.5x11 paper)
+const ASPECT_RATIO_PORTRAIT = {w: 1, h: 1.348684};	// Aspect ratio for map (so it prints on 8.5x11 paper)
 const ASPECT_RATIO_LANDSCAPE = {w: 1.348684, h: 1}; // This should match the aspect ratio of the width and height defined in the CSS.
 
 // The geo map offsets the Y values, why?
 const GEO_MAP_OFFSET = 50;
 
 // Choose colors at https://www.w3schools.com/colors/colors_picker.asp
-// To use the plotly default, just set the value to null: e.g. `ANNOTATION: null,`
+// To use the plotly default, just set the value to null: e.g. `ANNOTATION_BG: null,`
 const COLOR = {
 	MARKER_COE: 'rgb(255,77,77)',
 	MARKER_SC7: 'rgb(77,148,255)',
@@ -34,7 +34,7 @@ const COLOR = {
 	POOL: 'rgb(255,204,102)',
 	STORAGE: 'rgb(0,64,255)',
 	MISSING: 'rgb(148,77,255)',
-	ANNOTATION: 'rgba(255,255,255,0.66)',
+	ANNOTATION_BG: 'rgba(255,255,255,0.66)',
 }
 
 var CHART_BASE_CONFIG = 
@@ -43,7 +43,7 @@ var CHART_BASE_CONFIG =
 	style: 'open-street-map',
 	layers: null,
 	location: {
-		ca: {
+		ca: {                                  // This key should be the first part of the filename (e.g. ca_reservoirs.csv)
 			subtitle: 'California Projects',   // Subtitle, appears as suffix on the plot title
 			center: {
 				lat: 38.465,
@@ -138,19 +138,6 @@ function toggleLoading(plot_id, show) {
 	document.getElementById(plot_id).style.visibility = plot;
 }
 
-async function getGeoJSON(filename = "") {
-	if( filename.indexOf('/') >= 0 || filename.indexOf('\\') >= 0 ) {
-		throw new Error('filename argument must not contain a path!');
-	}
-	const res = await fetch("/extra/" + filename, {
-		headers: {
-			"Content-Type": "application/json",
-		}
-	});
-
-	return res.json();
-}
-
 async function getTimeseriesCDA(pathname, date, tz) {
 	let begin = new Date(date);
 	begin.setDate(begin.getDate() - 7);
@@ -225,6 +212,7 @@ Date.prototype.formatDateWithZone = function (tz, offset = false) {
 
 	// If we are at midnight local time (Pacific or Mountain timezone),
 	// then subtract a day so we can display "24:00"
+	// TODO: This uses the local browser timezone, so might be wrong sometimes. Fix this, if possible.
 	if( (dt.getHours() === 0 || dt.getHours() === 23) && dt.getMinutes() === 0 && dt.getSeconds() === 0) {
 		dt.setDate(dt.getDate() - 1);
 	}
@@ -263,6 +251,7 @@ Date.prototype.formatDate24 = function (tz) {
 
 	// If we are at midnight local time (Pacific or Mountain timezone),
 	// then subtract a day so we can display "24:00"
+	// TODO: This uses the local browser timezone, so might be wrong sometimes. Fix this, if possible.
 	if( (dt.getHours() === 0 || dt.getHours() === 23) && dt.getMinutes() === 0 && dt.getSeconds() === 0) {
 		dt.setDate(dt.getDate() - 1);
 	}
@@ -282,7 +271,7 @@ function getLayout(config) {
 	let title_suffix = CHART_BASE_CONFIG.location[location].subtitle;
 
 	return {
-		title: 'Current Conditions - ' + title_suffix + `<br><span style="font-size: 80%;">Data ending ${config.datetime.formatDateWithZone(CHART_BASE_CONFIG.location[location].tz)}</span>`,
+		title: `Current Conditions - ${title_suffix}<br><span style="font-size: 80%;">Data ending ${config.datetime.formatDateWithZone(CHART_BASE_CONFIG.location[location].tz)}</span>`,
 		dragmode: false,
 		scatter:
 		{
@@ -314,8 +303,6 @@ function getLayout(config) {
 			showlakes: true,
 			showland: true,
 			showsubunits: true,
-            countrywidth: 0.5,
-            subunitwidth: 0.5,
 			below: 'traces',
 		},
 		mapbox: {
@@ -357,7 +344,7 @@ function getLayout(config) {
 				xanchor: 'left',
 				yanchor: 'bottom',
 				showarrow: false,
-				bgcolor: COLOR.ANNOTATION,
+				bgcolor: COLOR.ANNOTATION_BG,
 			},
 		],
 
@@ -464,6 +451,7 @@ async function buildPlotlyMap(plot_id) {
 	let date = document.getElementById('date').valueAsDate;
 	let aspect = ASPECT_RATIO_PORTRAIT;
 
+	// Swap this line with the next one, if you want to have a specific date in the URL for bookmarking.
 	//let url_query = `?location=${location}&date=${date.formatDateWithZone('UTC').split(' ')[0]}`
 	let url_query = `?location=${location}`
 	window.history.replaceState(null, null, window.location.pathname + url_query);
@@ -655,7 +643,6 @@ async function buildPlotlyMap(plot_id) {
 					},
 					showlegend: false,
 					legendgroup: stor_missing ? 'missing' : 'storage',
-					//hoverinfo: stor_missing ? 'text' : 'y',
 					hoverinfo: 'text',
 					hovertemplate: stor_missing ? 'Storage data unavailable<extra>%{meta.name}</extra>' : '%{y} %{meta.unit}<extra>%{meta.name}</extra>',
 
@@ -745,7 +732,6 @@ async function buildPlotlyMap(plot_id) {
 			for(let x = 0; x < subplot_stor.length; x++) {
 				layout[`yaxis${x+2}`] = {
 					domain: [subplot_stor[x].meta["y"] - SUBPLOT_HEIGHT / aspect.h, subplot_stor[x].meta["y"]],
-					//domain: [subplot_stor[x].meta["y"], subplot_stor[x].meta["y"] + SUBPLOT_HEIGHT / aspect.h],
 					fixedrange: true,
 					range: [0 - subplot_stor[x].meta['gross_stor'] * 0.01, subplot_stor[x].meta['gross_stor'] * 1.01],	// Add 1% to the max height, so the top isn't cut off
 					gridcolor: "rgba(0,0,0,1)",
