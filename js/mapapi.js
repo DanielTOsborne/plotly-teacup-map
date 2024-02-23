@@ -3,6 +3,8 @@ const CDA_BASE = 'https://cwms-data.usace.army.mil/cwms-data';
 // An ArcGIS key is only required if you want to use ArcGIS/ESRI maps.
 const GIS_API_KEY = '<your API key here>';
 
+// How many results to return per CDA query. The proper value depends on the interval of the time series. 10 is good for a week of daily data.
+const CDA_PAGE_SIZE = 20;
 /*
  The id of the <div> element that the plot will be drawn on.
  This is hardcoded for a single plot, but multiple can be used
@@ -142,7 +144,7 @@ async function getTimeseriesCDA(pathname, date, tz) {
 	let begin = new Date(date);
 	begin.setDate(begin.getDate() - 7);
 
-	const URL_TEMPLATE = `${CDA_BASE}/timeseries?name=${encodeURIComponent(pathname)}&begin=${encodeURIComponent(begin.toISOString().split('Z')[0])}&end=${encodeURIComponent(date.toISOString().split('Z')[0])}&office=${DISTRICT}&timezone=${encodeURIComponent(tz)}&page-size=10`
+	const URL_TEMPLATE = `${CDA_BASE}/timeseries?name=${encodeURIComponent(pathname)}&begin=${encodeURIComponent(begin.toISOString().split('Z')[0])}&end=${encodeURIComponent(date.toISOString().split('Z')[0])}&office=${DISTRICT}&timezone=${encodeURIComponent(tz)}&page-size=${CDA_PAGE_SIZE}`
 
 	// Undefined means the TS path wasn't set in the CSV, this shows "N/A" in the popup.
 	const UNDEF_VALUE = {
@@ -586,8 +588,12 @@ async function buildPlotlyMap(plot_id) {
 					stor_missing = true;
 				}
 
+				let diff = await stor.then( (v) => v.datetime ) - await toc.then( (v) => v.datetime );
+
 				if( await toc.then( (v) => v.value ) === null || await toc.then( (v) => v.value ) === undefined 
-					|| await toc.then( (v) => v.datetime ) != await stor.then( (v) => v.datetime )) {          // make sure TOC date matches storage
+					// TOC should be within a day of the storage value to be valid. If all data is daily interval, they will be the exact same time.
+					// For some irregular TS cases (i.e. Folsom), TOC is computed multiple times a day. Allow time mismatch if it's within a day.
+					|| diff < 0 || diff >= 86400000) {
 					toc_missing = true;
 				}
 
