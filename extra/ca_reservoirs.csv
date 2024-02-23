@@ -16,7 +16,7 @@ Lake McClure,New Exchequer Dam,SC7,37.585,-120.27,267.901,1024600,867,New Excheq
 Lake Mendocino,Coyote Valley Dam,COE,39.1981,-123.181,789.01,116470,764.8,Lake Mendocino-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Mendocino-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Mendocino.Stor-Top Con.Inst.~1Day.0.Calc-val,0.075,0.8
 Lake Oroville,Oroville Dam,SC7,39.5389,-121.486,899.93,3538000,900,Oroville Dam.Stor.Inst.~1Day.0.Calc-cdec,Oroville Dam.Elev.Inst.~1Day.0.Calc-cdec,Oroville Dam.Stor-Top Con.Inst.~1Day.0.Calc-cdec,0.375,0.95
 Lake Shasta,Shasta Dam,SC7,40.72249543,-122.4185524,0,4552100,1067,Shasta.Stor.Inst.~1Day.0.Raw-USBR-Combined,Shasta.Elev.Inst.~1Day.0.Raw-USBR-Combined,Shasta.Stor-Top Con.Inst.~1Day.0.Calc-usbr,0.225,0.95
-Lake Sonoma,Warm Springs Dam,COE,38.7225,-123.01,495.08,381000,495,Lake Sonoma-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Sonoma-Pool.Elev.Inst.~1Day.0.Calc-val,,0.075,0.675
+Lake Sonoma,Warm Springs Dam,COE,38.7225,-123.01,495.08,381000,495,Lake Sonoma-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Sonoma-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Sonoma.Stor-Top Con.Inst.~1Day.0.Calc-val,0.075,0.675
 Los Banos,,SC7,37.053,-121.049,106.68,34562,353.5,Los Banos.Stor.Inst.~1Day.0.MANUAL,Los Banos.Elev.Inst.~1Day.0.MANUAL,Los Banos.Stor-Top Con.Inst.~1Day.0.Calc-cdec,0.075,0.275
 Martis Creek,,COE,39.3267,-120.113,5858.01,20400,5838,Martis Creek-Pool.Stor.Inst.~1Day.0.Calc-val,Martis Creek-Pool.Elev.Inst.~1Day.0.Calc-val,Martis Creek.Stor-Top Con.Inst.~1Day.0.Calc-val,0.9,0.65
 Millerton Lake,Friant Dam,SC7,37.001,-119.705,581,520500,578,Friant Dam.Stor.Inst.~1Day.0.Raw-USBR-Combined,Friant Dam.Elev.Inst.~1Day.0.Raw-USBR-Combined,Friant Dam.Stor-Top Con.Inst.~1Day.0.Calc-usbr,0.225,0.15
