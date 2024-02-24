@@ -641,7 +641,7 @@ async function buildPlotlyMap(plot_id) {
 					meta: {
 						name: 'Current Storage',
 						gross_stor: parseFloat(rows[x]['Gross Pool Storage']),
-						toc: !toc_missing ? await toc.then( (v) => v.value ) : null,
+						toc: await toc.then( (v) => v.value ),
 						unit: await stor.then( (v) => v.units ),
 						x: parseFloat(rows[x]['X']),
 						y: parseFloat(rows[x]['Y']),
@@ -890,5 +890,8 @@ window.addEventListener("load", () => {
 		}
 	}
 
+	// date.onchange = function(evt) {
+	// 	buildPlotlyMap(PLOT_ID);
+	// }
 	buildPlotlyMap(PLOT_ID);
 });
