@@ -99,7 +99,8 @@ var CHART_BASE_CONFIG =
 	<em>Gross Pool Elevation:</em> %{meta.gross_elev:,.2f} %{customdata.gross_elev_units}<br>
 	<em>Current Elevation:</em> %{customdata.elev} %{customdata.elev_units}<br>
 	<br>
-	<em>Capacity Filled:</em> %{customdata.fill}<br>`
+	<em>Capacity Filled:</em> %{customdata.fill}<br>
+	<em>Encroachment:</em> %{customdata.encroachment}<br>`
 };
 
 const MAPS = {
@@ -266,6 +267,27 @@ Date.prototype.formatDate24 = function (tz) {
 	});
 
 	return s;
+}
+
+function computeEncroachment(gross, toc, storage) {
+	if(gross === null || toc === null || storage === null) {
+		return null;
+	}
+	if(toc === undefined) {
+		return undefined;
+	}
+
+	let encr = 0;
+
+	// Storage can be higher than gross if there's a sensor or rounding error.
+	// Compute encroachment, but capping at 100%, so we don't get insanely inflated values as the flood pool shrinks to 0.
+	if(storage > toc && gross > toc && storage <= gross) {
+		encr = Math.min((storage - toc) / Math.max(gross - toc, 1), 1);
+	} else if(storage > gross) {
+		encr = 1;
+	}
+
+	return encr;
 }
 
 function getLayout(config) {
@@ -687,6 +709,8 @@ async function buildPlotlyMap(plot_id) {
 				};
 				subplot_toc.push(toc_data);
 
+				let encr = computeEncroachment(stor_data.meta.gross_stor, toc_data.y[0], stor_data.y[0]);
+
 				map_points.customdata.push(
 					{
 						toc: toc_data.y[0] === undefined ? CHART_BASE_CONFIG.na_text : toc_data.y[0] === null ? CHART_BASE_CONFIG.unavailable_text : STOR_NFORMAT.format(toc_data.y[0]),
@@ -702,8 +726,11 @@ async function buildPlotlyMap(plot_id) {
 						elev_units: !elev_missing ? await elev.then( (v) => v.units ) : '',
 						gross_elev_units: await elev.then( (v) => v.units ) != null ? await elev.then( (v) => v.units ) : '',
 
-						// Other parameters
+						//// Other parameters
+						// Filled Capacity
 						fill: !stor_missing ? PFORMAT.format(stor_data.y[0] / stor_data.meta.gross_stor) : CHART_BASE_CONFIG.unavailable_text,
+						// Encroachment
+						encroachment: encr === undefined ? CHART_BASE_CONFIG.na_text : encr === null ? CHART_BASE_CONFIG.unavailable_text : PFORMAT.format(encr)
 					}
 				);
 			};
