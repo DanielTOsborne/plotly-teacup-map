@@ -58,6 +58,45 @@ var CHART_BASE_CONFIG =
 			},
 			tz: 'America/Los_Angeles',
 		},
+		cv: {                                  // This key should be the first part of the filename (e.g. ca_reservoirs.csv)
+			subtitle: 'California Central Valley', // Subtitle, appears as suffix on the plot title
+			center: {
+				lat: 38.265,
+				lon: -121.036
+			},
+			zoom: 5.6,                         // For mapbox, map zoom level
+			range: {
+				lon: 9.0,                      // For geo map, longitude width of view
+				lat: 10.6,                     // For geo map, latitude height of view
+			},
+			tz: 'America/Los_Angeles',
+		},
+		tg: {                                  // This key should be the first part of the filename (e.g. ca_reservoirs.csv)
+			subtitle: 'Truckee Storage Group', // Subtitle, appears as suffix on the plot title
+			center: {
+				lat: 39.396,
+				lon: -120.120
+			},
+			zoom: 9.3,                         // For mapbox, map zoom level
+			range: {
+				lon: 0.87,                     // For geo map, longitude width of view
+				lat: 1.0,                      // For geo map, latitude height of view
+			},
+			tz: 'America/Los_Angeles',
+		},
+		nc: {                                  // This key should be the first part of the filename (e.g. ca_reservoirs.csv)
+			subtitle: 'California North Coast',// Subtitle, appears as suffix on the plot title
+			center: {
+				lat: 38.507,
+				lon: -122.383
+			},
+			zoom: 7,                           // For mapbox, map zoom level
+			range: {
+				lon: 4.0,                      // For geo map, longitude width of view
+				lat: 4.75,                     // For geo map, latitude height of view
+			},
+			tz: 'America/Los_Angeles',
+		},
 		gb: {
 			subtitle: 'Utah Great Basin',      // Subtitle, appears as suffix on the plot title
 			center: {

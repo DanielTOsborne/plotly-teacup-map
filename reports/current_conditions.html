@@ -44,10 +44,12 @@
 				background-color: grey;
 			}
 
-			.ca {
-				width: 7.6in; height: 10.25in;
+			.js-plotly-plot {
+				/* Default map is portrait mode */
+				width: 7.6in; height: 10.25in;				
 			}
 			.gb, .uc {
+				/* Change to landscape for selected areas */
 				width: 10.25in; height: 7.6in;
 			}
 			.testing {
@@ -58,6 +60,9 @@
 			.testing::before {
 				content: "Testing";
 				font-weight: bold;
+			}
+			.hidden {
+				display: none;
 			}
 
 			@media print {
@@ -136,9 +141,13 @@
 										<div id="controls">
 											<label for="location">Location:</label>
 											<select id="location" onchange="buildPlotlyMap('map');">
-												<option value="ca">California</option>
+												<option value="cv">Central Valley</option>
+												<option value="tg">Truckee Group</option>
+												<option value="nc">North Coast - SPN</option>
 												<option value="gb">Great Basin</option>
 												<option value="uc">Upper Colorado</option>
+												<!-- This option isn't visible for selection, but works if you specify the key in the URL. -->
+												<option value="ca" class="hidden">California</option>
 											</select>
 											<label for="date">Date:</label>
 											<input id="date" type="date" onchange="buildPlotlyMap('map');"/>

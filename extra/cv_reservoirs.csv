@@ -1,0 +1,22 @@
+Name,Dam Name,Owner,Latitude,Longitude,Elevation,Gross Pool Storage,Gross Pool Elevation,CWMS-Storage,CWMS-Elevation,CWMS-TOC,X,Y
+Big Dry Cr,,COE,36.8833,-119.667,399,30200,432.7,Big Dry Cr.Stor.Inst.~1Day.0.MANUAL,Big Dry Cr.Elev.Inst.~1Day.0.MANUAL,Big Dry Cr.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.5625,0.1375
+Black Butte,,COE,39.8006,-122.358,129.839,136200,473.5,Black Butte-Pool.Stor.Inst.~1Day.0.Calc-val,Black Butte-Pool.Elev.Inst.~1Day.0.Calc-val,Black Butte.Stor-Top Con.Inst.~1Day.0.Calc-val,0.075,0.95
+Don Pedro,,SC7,37.7028,-120.424,830,2030000,830,Don Pedro.Stor.Inst.~1Day.0.MANUAL,Don Pedro.Elev.Inst.~1Day.0.MANUAL,Don Pedro.Stor-Top Con.Inst.~1Day.0.calc-manual,0.9,0.6625
+Eastman Lake,Bucanan Dam,COE,37.2173,-119.984,137.16,150000,587,Eastman Lake-Pool.Stor.Inst.~1Day.0.Calc-val,Eastman Lake-Pool.Elev.Inst.~1Day.0.Calc-val,Eastman Lake.Stor-Top Con.Inst.~1Day.0.Calc-val,0.1125,0.1375
+Farmington,,COE,37.915,-120.935,179.99,52000,156.5,Farmington Dam-Pool.Stor.Inst.~1Day.0.Calc-val,Farmington Dam-Pool.Elev.Inst.~1Day.0.Calc-val,,0.075,0.4125
+Folsom Lake,Folsom Dam,SC7,38.7,-121.15,466,966000,466,Folsom Lake.Stor.Inst.~1Day.0.Raw-USBR-Combined,Folsom Lake.Elev.Inst.~1Day.0.Raw-USBR-Combined,Folsom Lake.Stor-Top Con.Inst.0.0.Calc-NWS,0.675,0.95
+Hensley Lake,Hidden Dam,COE,37.1039,-119.888,581,90000,540,Hensley lake-Pool.Stor.Inst.~1Day.0.Calc-val,Hensley lake-Pool.Elev.Inst.~1Day.0.Calc-val,Hensley Lake.Stor-Top Con.Inst.~1Day.0.Calc-val,0.2625,0.1375
+Indian Valley,,SC7,39.0833,-122.533,1501.97,300600,1485,Indian Valley.Stor.Inst.~1Day.0.MANUAL,Indian Valley.Elev.Inst.~1Day.0.MANUAL,Indian Valley.Stor-Top Con.Inst.~1Day.0.Calc-usgs,0.075,0.7875
+Lake Camanche,Camanche Dam,SC7,38.2333,-121.017,235.89,417100,235.5,Camanche.Stor.Inst.~1Day.0.MANUAL,Camanche.Elev.Inst.~1Day.0.MANUAL,Camanche.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.075,0.6625
+Lake Isabella,Isabella Dam,COE,35.6461,-118.478,2448.5,568100,2605.5,Lake Isabella-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Isabella-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Isabella.Stor-Top Con.Inst.~1Day.0.Calc-val,0.8625,0.1375
+Lake Kaweah,Terminus Dam,COE,36.4147,-119.002,76.2,185600,715,Lake Kaweah-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Kaweah-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Kaweah.Stor-Top Con.Inst.~1Day.0.Calc-val,0.9,0.2875
+Lake McClure,New Exchequer Dam,SC7,37.585,-120.27,267.901,1024600,867,New Exchequer.Stor.Inst.~1Day.0.MANUAL,New Exchequer.Elev.Inst.~1Day.0.MANUAL,New Exchequer.Stor-Top Con.Inst.~1Day.0.calc-manual,0.9,0.5375
+Lake Oroville,Oroville Dam,SC7,39.5389,-121.486,899.93,3538000,900,Oroville Dam.Stor.Inst.~1Day.0.Calc-cdec,Oroville Dam.Elev.Inst.~1Day.0.Calc-cdec,Oroville Dam.Stor-Top Con.Inst.~1Day.0.Calc-cdec,0.375,0.95
+Lake Shasta,Shasta Dam,SC7,40.72249543,-122.4185524,0,4552100,1067,Shasta.Stor.Inst.~1Day.0.Raw-USBR-Combined,Shasta.Elev.Inst.~1Day.0.Raw-USBR-Combined,Shasta.Stor-Top Con.Inst.~1Day.0.Calc-usbr,0.225,0.95
+Los Banos,,SC7,37.053,-121.049,106.68,34562,353.5,Los Banos.Stor.Inst.~1Day.0.MANUAL,Los Banos.Elev.Inst.~1Day.0.MANUAL,Los Banos.Stor-Top Con.Inst.~1Day.0.Calc-cdec,0.075,0.2875
+Millerton Lake,Friant Dam,SC7,37.001,-119.705,581,520500,578,Friant Dam.Stor.Inst.~1Day.0.Raw-USBR-Combined,Friant Dam.Elev.Inst.~1Day.0.Raw-USBR-Combined,Friant Dam.Stor-Top Con.Inst.~1Day.0.Calc-usbr,0.4125,0.1375
+New Bullards Bar,,SC7,39.393,-121.14,598.902,966000,1956,New Bullards Bar.Stor.Inst.~1Day.0.Calc-cdec,New Bullards Bar.Elev.Inst.~1Day.0.Calc-cdec,New Bullards Bar.Stor-Top Con.Inst.~1Day.0.Calc-usbr,0.525,0.95
+New Hogan,,COE,38.1536,-120.8,725.07,317100,713,New Hogan-Pool.Stor.Inst.~1Day.0.Calc-val,New Hogan-Pool.Elev.Inst.~1Day.0.Calc-val,New Hogan.Stor-Top Con.Inst.~1Day.0.Calc-val,0.075,0.5375
+New Melones,,COE,37.9491,-120.524,345.948,2420000,1088,New Melones.Stor.Inst.~1Day.0.Raw-USBR-Combined,New Melones.Elev.Inst.~1Day.0.Raw-USBR-Combined,New Melones.Stor-Top Con.Inst.~1Day.0.Calc-cdec,0.9,0.7875
+Pine Flat Lake,,COE,36.8511,-119.314,541,1001055,951.5,Pine Flat Lake-Pool.Stor.Inst.~1Day.0.Calc-val,Pine Flat Lake-Pool.Elev.Inst.~1Day.0.Calc-val,Pine Flat Lake.Stor-Top Con.Inst.~1Day.0.Calc-val,0.9,0.4125
+Success Lake,Schafer Dam,COE,36.0611,-118.922,179.829,84095,652.5,Success Lake-Pool.Stor.Inst.~1Day.0.Calc-val,Success Lake-Pool.Elev.Inst.~1Day.0.Calc-val,Success Lake.Stor-Top Con.Inst.~1Day.0.Calc-val,0.7125,0.1375
