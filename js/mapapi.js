@@ -795,7 +795,7 @@ async function buildPlotlyMap(plot_id) {
 					x0: -0.675,                // Left margin from plot area (y-axis tick labels)
 					y0: -0.25,                 // Bottom margin from plot area
 					x1: 1.125,                 // Right margin from plot area
-					y1: 1.275,                 // Top margin from plot area (subplot title)
+					y1: 1.3,                   // Top margin from plot area (subplot title)
 					label: {
 						text: subplot_stor[x].name,
 						textposition: 'top center',
