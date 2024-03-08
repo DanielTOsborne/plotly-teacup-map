@@ -656,12 +656,17 @@ async function buildPlotlyMap(plot_id) {
 				let diff = stor_result.datetime - toc_result.datetime;
 				console.debug(`${rows[x]['Name']} diff: ${diff}`);
 
+				// If it's null, there is supposed to be a TOC, but it hasn't computed for the requested date. Shows "Unavailable" on popup.
+				// If the value is undefined, there is no TOC for this reservoir (e.g. Farmington). Shows "N/A" on popup.
 				if( toc_result.value === null || toc_result.value === undefined 
 					// TOC should be within a day of the storage value to be valid. If all data is daily interval, they will be the exact same time.
 					// For some irregular TS cases (i.e. Folsom), TOC is computed multiple times a day. Allow time mismatch if it's within a day.
 					|| diff < 0 || diff >= 86400000) {
 					toc_missing = true;
-					toc_result.value = null;
+
+					if(toc_result.value !== undefined) {
+						toc_result.value = null;
+					}
 				}
 
 				if( elev_result.value === null ) {
