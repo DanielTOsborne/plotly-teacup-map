@@ -644,32 +644,38 @@ async function buildPlotlyMap(plot_id) {
 				let toc_missing = false;
 				let elev_missing = false;
 
-				if( (await stor.then( (v) => v.value )) === null ) {
+				let toc_result = await toc.then( (v) => v );
+				let stor_result = await stor.then( (v) => v );
+				let elev_result = await elev.then( (v) => v );
+
+				if( stor_result.value === null ) {
 					missing_data = true;
 					stor_missing = true;
 				}
 
-				let diff = await stor.then( (v) => v.datetime ) - await toc.then( (v) => v.datetime );
+				let diff = stor_result.datetime - toc_result.datetime;
+				console.debug(`${rows[x]['Name']} diff: ${diff}`);
 
-				if( await toc.then( (v) => v.value ) === null || await toc.then( (v) => v.value ) === undefined 
+				if( toc_result.value === null || toc_result.value === undefined 
 					// TOC should be within a day of the storage value to be valid. If all data is daily interval, they will be the exact same time.
 					// For some irregular TS cases (i.e. Folsom), TOC is computed multiple times a day. Allow time mismatch if it's within a day.
 					|| diff < 0 || diff >= 86400000) {
 					toc_missing = true;
+					toc_result.value = null;
 				}
 
-				if( (await elev.then( (v) => v.value )) === null ) {
+				if( elev_result.value === null ) {
 					elev_missing = true;
 				}
 
-				if(datetime === null || datetime < await stor.then( (v) => v.datetime)) {
+				if(datetime === null || datetime < stor_result.datetime) {
 					datetime = new Date();
-					datetime.setTime(await stor.then( (v) => v.datetime ));
+					datetime.setTime(stor_result.datetime);
 				}
 				subplot_gross.push({
 					type: 'bar',
 					x: [0],
-					// x: [await stor.then( (v) => new Date(v.datetime) )],
+					// x: [new Date(stor_result.datetime)],
 					y: [parseFloat(rows[x]['Gross Pool Storage'])],
 					width: 0.9,
 					name: rows[x]['Name'],
@@ -678,8 +684,8 @@ async function buildPlotlyMap(plot_id) {
 					},
 					meta: {
 						name: 'Gross Pool Storage',
-						unit: await stor.then( (v) => v.units ),
-						datetime: await stor.then( (v) => new Date(v.datetime) ),
+						unit: stor_result.units,
+						datetime: new Date(stor_result.datetime ),
 					},
 					showlegend: false,
 					legendgroup: 'capacity',
@@ -693,8 +699,8 @@ async function buildPlotlyMap(plot_id) {
 				let stor_data = {
 					type: 'bar',
 					x: [0],
-					// x: [await stor.then( (v) => new Date(v.datetime) )],
-					y: [stor_missing ? parseFloat(rows[x]['Gross Pool Storage']) : await stor.then( (v) => v.value )],
+					// x: [new Date(stor_result.datetime)],
+					y: [stor_missing ? parseFloat(rows[x]['Gross Pool Storage']) : stor_result.value],
 					name: rows[x]['Name'],
 					marker: {
 						color: stor_missing ? COLOR.MISSING : COLOR.STORAGE,
@@ -702,11 +708,11 @@ async function buildPlotlyMap(plot_id) {
 					meta: {
 						name: 'Current Storage',
 						gross_stor: parseFloat(rows[x]['Gross Pool Storage']),
-						toc: await toc.then( (v) => v.value ),
-						unit: await stor.then( (v) => v.units ),
+						toc: toc_result.value,
+						unit: toc_result.units,
 						x: parseFloat(rows[x]['X']),
 						y: parseFloat(rows[x]['Y']),
-						datetime: await stor.then( (v) => new Date(v.datetime) ),
+						datetime: new Date(stor_result.datetime),
 					},
 					showlegend: false,
 					legendgroup: stor_missing ? 'missing' : 'storage',
@@ -726,7 +732,7 @@ async function buildPlotlyMap(plot_id) {
 					yref: `y${x+2}`,
 					// TOC has 3 points, so the center value can be used to aid hover popup
 					x: [subplot_stor[x].x[0] - 0.5, subplot_stor[x].x[0], subplot_stor[x].x[0] + 0.5],
-					//x: [await toc.then( (v) => new Date(v.datetime - 0.5) ), await toc.then( (v) => new Date(v.datetime) ), await toc.then( (v) => new Date(v.datetime + 0.5) )],
+					//x: [new Date(toc_result.datetime - 0.5), new Date(toc_result.datetime), new Date(toc_result.datetime + 0.5)],
 					y: [subplot_stor[x].meta.toc, subplot_stor[x].meta.toc, subplot_stor[x].meta.toc],
 					line: {
 						color: COLOR.TOC,
@@ -736,8 +742,8 @@ async function buildPlotlyMap(plot_id) {
 					name: rows[x]['Name'],
 					meta: {
 						name: 'Top of Conservation',
-						unit: await toc.then( (v) => v.units ),
-						datetime: await stor.then( (v) => new Date(v.datetime) ),
+						unit: toc_result.units,
+						datetime: new Date(stor_result.datetime),  // Use storage date, so the bars are always aligned
 					},
 					showlegend: false,
 					hoverinfo: 'text',
@@ -761,9 +767,9 @@ async function buildPlotlyMap(plot_id) {
 
 						// Elevation data isn't placed on the subplots, it's only in the hover popup.
 						// SPK doesn't use elevation data directly. Other districts may want to change this design.
-						elev: !elev_missing ? NFORMAT.format(await elev.then( (v) => v.value )) : CHART_BASE_CONFIG.unavailable_text,
-						elev_units: !elev_missing ? await elev.then( (v) => v.units ) : '',
-						gross_elev_units: await elev.then( (v) => v.units ) != null ? await elev.then( (v) => v.units ) : '',
+						elev: !elev_missing ? NFORMAT.format(elev_result.value) : CHART_BASE_CONFIG.unavailable_text,
+						elev_units: !elev_missing ? elev_result.units : '',
+						gross_elev_units: elev_result.units != null ? elev_result.units : '',
 
 						//// Other parameters
 						// Filled Capacity
