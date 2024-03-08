@@ -685,7 +685,8 @@ svg {
 		right: -220px;
 		top: 68px;
 		transition: right .2s ease-in-out;
-		width: 206px;		
+		width: 206px;
+		display: none;
 	}
 
 	#main-search.search-open {
@@ -693,6 +694,7 @@ svg {
 		right: 16px;
 		top: 36px;
 		z-index: 50;
+		display: revert;
 	}
 
 	#search-form-trigger.search-open span::before {
