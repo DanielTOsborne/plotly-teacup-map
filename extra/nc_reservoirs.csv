@@ -1,4 +1,4 @@
 Name,Dam Name,Owner,Latitude,Longitude,Elevation,Gross Pool Storage,Gross Pool Elevation,CWMS-Storage,CWMS-Elevation,CWMS-TOC,X,Y
-Del Valle,,SC7,37.614,-121.745,703,74000,742,Del Valle.Stor.Inst.~1Day.0.MANUAL,Del Valle.Elev.Inst.~1Day.0.MANUAL,Del Valle.Stor-Top Con.Inst.~1Day.0.Calc-val,0.85,0.4
-Lake Mendocino,Coyote Valley Dam,COE,39.1981,-123.181,789.01,116470,764.8,Lake Mendocino-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Mendocino-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Mendocino.Stor-Top Con.Inst.~1Day.0.Calc-val,0.1,0.8
-Lake Sonoma,Warm Springs Dam,COE,38.7225,-123.01,495.08,381000,495,Lake Sonoma-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Sonoma-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Sonoma.Stor-Top Con.Inst.~1Day.0.Calc-val,0.1,0.475
+Del Valle,,SC7,37.614,-121.745,703,Del Valle.Stor.Inst.0.Top of Gross Pool,Del Valle.Elev.Inst.0.Top of Gross Pool,Del Valle.Stor.Inst.~1Day.0.MANUAL,Del Valle.Elev.Inst.~1Day.0.MANUAL,Del Valle.Stor-Top Con.Inst.~1Day.0.Calc-val,0.85,0.4
+Lake Mendocino,Coyote Valley Dam,COE,39.1981,-123.181,789.01,Lake Mendocino.Stor.Inst.0.Top of Gross Pool,Lake Mendocino.Elev.Inst.0.Top of Gross Pool,Lake Mendocino-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Mendocino-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Mendocino.Stor-Top Con.Inst.~1Day.0.Calc-val,0.1,0.8
+Lake Sonoma,Warm Springs Dam,COE,38.7225,-123.01,495.08,Lake Sonoma.Stor.Inst.0.Top of Gross Pool,Lake Sonoma.Elev.Inst.0.Top of Gross Pool,Lake Sonoma-Pool.Stor.Inst.~1Day.0.Calc-val,Lake Sonoma-Pool.Elev.Inst.~1Day.0.Calc-val,Lake Sonoma.Stor-Top Con.Inst.~1Day.0.Calc-val,0.1,0.475

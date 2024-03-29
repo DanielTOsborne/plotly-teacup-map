@@ -1,10 +1,10 @@
 const DISTRICT = 'SPK';
 const CDA_BASE = 'https://cwms-data.usace.army.mil/cwms-data';
+// How many results to return per CDA query. The proper value depends on the interval of the time series. 10 is good for a week of daily data.
+const CDA_PAGE_SIZE = 20;
 // An ArcGIS key is only required if you want to use ArcGIS/ESRI maps.
 const GIS_API_KEY = '<your API key here>';
 
-// How many results to return per CDA query. The proper value depends on the interval of the time series. 10 is good for a week of daily data.
-const CDA_PAGE_SIZE = 20;
 /*
  The id of the <div> element that the plot will be drawn on.
  This is hardcoded for a single plot, but multiple can be used
@@ -131,11 +131,11 @@ var CHART_BASE_CONFIG =
 
 	// This is the popup text that appears when the mouse moves over a point on the map
 	map_hovertemplate: `<b>%{text}%{meta.dam}</b><br>
-	<em>Gross Pool Storage:</em> %{meta.gross_stor:,.0f} %{customdata.gross_stor_units}<br>
+	<em>Gross Pool Storage:</em> %{customdata.gross_stor:,.0f} %{customdata.gross_stor_units}<br>
 	<em>Current Storage:</em> %{customdata.stor} %{customdata.stor_units}<br>
 	<em>Top of Conservation:</em> %{customdata.toc} %{customdata.toc_units}<br>
 	<br>
-	<em>Gross Pool Elevation:</em> %{meta.gross_elev:,.2f} %{customdata.gross_elev_units}<br>
+	<em>Gross Pool Elevation:</em> %{customdata.gross_elev:,.2f} %{customdata.gross_elev_units}<br>
 	<em>Current Elevation:</em> %{customdata.elev} %{customdata.elev_units}<br>
 	<br>
 	<em>Capacity Filled:</em> %{customdata.fill}<br>
@@ -247,6 +247,79 @@ async function getTimeseriesCDA(pathname, date, tz) {
 			return getResult(data);
 		}).catch((error) => ERROR_VALUE);
 	});
+}
+
+async function getLevelCDA(pathname, date, tz, units) {
+	const URL_TEMPLATE = `${CDA_BASE}/levels/${encodeURIComponent(pathname)}?effective-date=${encodeURIComponent(date.toISOString().split('Z')[0])}&unit=${units}&office=${DISTRICT}&timezone=${encodeURIComponent(tz)}`
+
+	// Undefined means the TS path wasn't set in the CSV, this shows "N/A" in the popup.
+	const UNDEF_VALUE = {
+		"datetime": 0,
+		"value": undefined,
+		"units": null,
+	};
+
+	// Normal error condition, shows "Unavailable" in the popup.
+	const ERROR_VALUE = {
+		"datetime": 0,
+		"value": null,
+		"units": null,
+	};
+
+	function getResult(data) {
+		let result = ERROR_VALUE;
+		result.units = data["level-units-id"];
+
+		result.datetime = new Date(data["level-date"]);
+		result.value = data["constant-value"];
+
+		return result;
+	}
+
+	if(pathname === "") {
+		return UNDEF_VALUE;
+	}
+
+	const res = await fetch(URL_TEMPLATE, {
+		headers: {
+			"Accept": "application/json;version=2",
+		}
+	});
+
+	return res.json().then( (data) => {
+		return getResult(data);
+	}).catch(async (error) => {
+		// Try one more time, in case there was some intermittent error
+		await sleep(1000);
+		const res = await fetch(URL_TEMPLATE, {
+			headers: {
+				"Accept": "application/json;version=2",
+			}
+		});
+		return res.json().then( (data) => {
+			return getResult(data);
+		}).catch((error) => ERROR_VALUE);
+	});
+}
+
+async function getLevel(value_or_name, date, tz, units) {
+	let value = value_or_name;
+	let value_result = null;
+
+	// Values might be stored as a literal in the CSV, or a CWMS location level
+	// If value is not a number, then assume it's a Location Level
+	if(isNaN(value)) {
+		let value = getLevelCDA(value_or_name, date, tz, units);
+		value_result = await value.then( (v) => v );
+	} else {
+		value_result = {
+			"datetime": date,
+			"value": parseFloat(value),
+			"units": units,
+		}
+	}
+
+	return value_result;
 }
 
 Date.prototype.formatDateWithZone = function (tz, offset = false) {
@@ -575,7 +648,7 @@ async function buildPlotlyMap(plot_id) {
 			var owners = [...new Set(ownerArray)];
 		
 			function unpack(rows, key) {
-			return rows.map(function(row) { return row[key]; });
+				return rows.map(function(row) { return row[key]; });
 			}
 		
 			var data = owners.map(function(owners) {
@@ -640,6 +713,11 @@ async function buildPlotlyMap(plot_id) {
 				let elev = getTimeseriesCDA(rows[x]['CWMS-Elevation'], date, CHART_BASE_CONFIG.location[location].tz);
 				let toc = getTimeseriesCDA(rows[x]['CWMS-TOC'], date, CHART_BASE_CONFIG.location[location].tz);
 
+				// The units are hardcoded here to speed up the queries. This will be validated below.
+				// Waiting for getTimeseriesCDA results before fetching locations with the units increases loading time by about 50%.
+				let gross_stor = getLevel(rows[x]['Gross Pool Storage'], date, CHART_BASE_CONFIG.location[location].tz, "ac-ft");
+				let gross_elev = getLevel(rows[x]['Gross Pool Elevation'], date, CHART_BASE_CONFIG.location[location].tz, "ft");
+
 				let stor_missing = false;
 				let toc_missing = false;
 				let elev_missing = false;
@@ -651,6 +729,19 @@ async function buildPlotlyMap(plot_id) {
 				if( stor_result.value === null ) {
 					missing_data = true;
 					stor_missing = true;
+				}
+
+				let gross_stor_result = await gross_stor.then( (v) => v );
+				let gross_elev_result = await gross_elev.then( (v) => v );
+
+				// Check if the units match, and refetch if not
+				if(gross_elev_result.units != elev_result.units) {
+					gross_elev = getLevel(rows[x]['Gross Pool Elevation'], date, CHART_BASE_CONFIG.location[location].tz, elev_result.units);
+					gross_elev_result = await gross_elev.then( (v) => v );
+				}
+				if(gross_stor_result.units != stor_result.units) {
+					gross_stor = getLevel(rows[x]['Gross Pool Storage'], date, CHART_BASE_CONFIG.location[location].tz, stor_result.units);
+					gross_stor_result = await gross_elev.then( (v) => v );
 				}
 
 				let diff = stor_result.datetime - toc_result.datetime;
@@ -681,7 +772,7 @@ async function buildPlotlyMap(plot_id) {
 					type: 'bar',
 					x: [0],
 					// x: [new Date(stor_result.datetime)],
-					y: [parseFloat(rows[x]['Gross Pool Storage'])],
+					y: [gross_stor_result.value],
 					width: 0.9,
 					name: rows[x]['Name'],
 					marker: {
@@ -705,14 +796,14 @@ async function buildPlotlyMap(plot_id) {
 					type: 'bar',
 					x: [0],
 					// x: [new Date(stor_result.datetime)],
-					y: [stor_missing ? parseFloat(rows[x]['Gross Pool Storage']) : stor_result.value],
+					y: [stor_missing ? gross_stor_result.value : stor_result.value],
 					name: rows[x]['Name'],
 					marker: {
 						color: stor_missing ? COLOR.MISSING : COLOR.STORAGE,
 					},
 					meta: {
 						name: 'Current Storage',
-						gross_stor: parseFloat(rows[x]['Gross Pool Storage']),
+						gross_stor: gross_stor_result.value,
 						toc: toc_result.value,
 						unit: toc_result.units,
 						x: parseFloat(rows[x]['X']),
@@ -768,12 +859,14 @@ async function buildPlotlyMap(plot_id) {
 
 						stor: !stor_missing ? STOR_NFORMAT.format(stor_data.y[0]) : CHART_BASE_CONFIG.unavailable_text,
 						stor_units: !stor_missing && stor_data.meta.unit != null ? stor_data.meta.unit : '',
+						gross_stor: stor_data.meta.gross_stor,
 						gross_stor_units: stor_data.meta.unit != null ? stor_data.meta.unit : '',
 
 						// Elevation data isn't placed on the subplots, it's only in the hover popup.
 						// SPK doesn't use elevation data directly. Other districts may want to change this design.
 						elev: !elev_missing ? NFORMAT.format(elev_result.value) : CHART_BASE_CONFIG.unavailable_text,
 						elev_units: !elev_missing ? elev_result.units : '',
+						gross_elev: gross_elev_result.value,
 						gross_elev_units: elev_result.units != null ? elev_result.units : '',
 
 						//// Other parameters

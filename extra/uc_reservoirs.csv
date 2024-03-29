@@ -1,8 +1,8 @@
 Name,Owner,Latitude,Longitude,Elevation,Gross Pool Storage,Gross Pool Elevation,CWMS-Storage,CWMS-Elevation,CWMS-TOC,X,Y
-Blue Mesa,SC7,38.4533,-107.334,7519,940800,7519.4,Blue Mesa.Stor.Inst.~1Day.0.Rev-USBRSLC,Blue Mesa.Elev.Inst.~1Day.0.Raw-USBRSLC,Blue Mesa.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.8,0.475
-Lemon,SC7,37.3903,-107.65,2423.77,40100,8148,Lemon.Stor.Inst.~1Day.0.Rev-USBRSLC,Lemon.Elev.Inst.~1Day.0.Raw-USBRSLC,Lemon.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.25
-Paonia,SC7,38.9428,-107.352,6287,15522,6447.5,Paonia.Stor.Inst.~1Day.0.Rev-USBRSLC,Paonia.Elev.Inst.~1Day.0.Raw-USBRSLC,Paonia.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.8,0.7
-Red Fleet,SC7,40.6333,-109.433,1671.22,26000,5608.3,Red Fleet.Stor.Inst.~1Day.0.Rev-USBRSLC,Red Fleet.Elev.Inst.~1Day.0.Raw-USBRSLC,Red Fleet.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.925
-Ridgway,SC7,38.2333,-107.75,6680,84400,6871.13,Ridgway.Stor.Inst.~1Day.0.Rev-USBRSLC,Ridgway.Elev.Inst.~1Day.0.Raw-USBRSLC,Ridgway.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.475
-Starvation,SC7,40.1167,-110.383,5563,164118,5712,Starvation.Stor.Inst.~1Day.0.Rev-USBRSLC,Starvation.Elev.Inst.~1Day.0.Raw-USBRSLC,Starvation.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.7
-Vallecito,SC7,37.3833,-107.581,7547,129700,7665,Vallecito.Stor.Inst.~1Day.0.Rev-USBRSLC,Vallecito.Elev.Inst.~1Day.0.Raw-USBRSLC,Vallecito.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.8,0.25
+Blue Mesa,SC7,38.4533,-107.334,7519,Blue Mesa.Stor.Inst.0.Top of Gross Pool,Blue Mesa.Elev.Inst.0.Top of Gross Pool,Blue Mesa.Stor.Inst.~1Day.0.Rev-USBRSLC,Blue Mesa.Elev.Inst.~1Day.0.Raw-USBRSLC,Blue Mesa.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.8,0.475
+Lemon,SC7,37.3903,-107.65,2423.77,40100,Lemon.Elev.Inst.0.Top of Gross Pool,Lemon.Stor.Inst.~1Day.0.Rev-USBRSLC,Lemon.Elev.Inst.~1Day.0.Raw-USBRSLC,Lemon.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.25
+Paonia,SC7,38.9428,-107.352,6287,15522,Paonia.Elev.Inst.0.Top of Gross Pool,Paonia.Stor.Inst.~1Day.0.Rev-USBRSLC,Paonia.Elev.Inst.~1Day.0.Raw-USBRSLC,Paonia.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.8,0.7
+Red Fleet,SC7,40.6333,-109.433,1671.22,Red Fleet.Stor.Inst.0.Top of Gross Pool,Red Fleet.Elev.Inst.0.Top of Gross Pool,Red Fleet.Stor.Inst.~1Day.0.Rev-USBRSLC,Red Fleet.Elev.Inst.~1Day.0.Raw-USBRSLC,Red Fleet.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.925
+Ridgway,SC7,38.2333,-107.75,6680,84400,Ridgway.Elev.Inst.0.Top of Gross Pool,Ridgway.Stor.Inst.~1Day.0.Rev-USBRSLC,Ridgway.Elev.Inst.~1Day.0.Raw-USBRSLC,Ridgway.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.475
+Starvation,SC7,40.1167,-110.383,5563,Starvation.Stor.Inst.0.Top of Gross Pool,Starvation.Elev.Inst.0.Top of Gross Pool,Starvation.Stor.Inst.~1Day.0.Rev-USBRSLC,Starvation.Elev.Inst.~1Day.0.Raw-USBRSLC,Starvation.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.1,0.7
+Vallecito,SC7,37.3833,-107.581,7547,129700,Vallecito.Elev.Inst.0.Top of Gross Pool,Vallecito.Stor.Inst.~1Day.0.Rev-USBRSLC,Vallecito.Elev.Inst.~1Day.0.Raw-USBRSLC,Vallecito.Stor-Top Con.Inst.~1Day.0.Rev-USBRSLC,0.8,0.25

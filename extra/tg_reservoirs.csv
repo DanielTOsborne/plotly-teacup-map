@@ -1,5 +1,5 @@
 Name,Dam Name,Owner,Latitude,Longitude,Elevation,Gross Pool Storage,Gross Pool Elevation,CWMS-Storage,CWMS-Elevation,CWMS-TOC,X,Y
-Boca,,SC7,39.383,-120.1,1682.8,41100,5605,Boca.Stor.Inst.~1Day.0.Calc-usgs,Boca.Elev.Inst.~1Day.0.MANUAL,Boca.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.85,0.75
-Martis Creek,,COE,39.3267,-120.113,5858.01,20400,5838,Martis Creek-Pool.Stor.Inst.~1Day.0.Calc-val,Martis Creek-Pool.Elev.Inst.~1Day.0.Calc-val,Martis Creek.Stor-Top Con.Inst.~1Day.0.Calc-val,0.85,0.4
-Prosser Creek,,SC7,39.3794,-120.137,5622,29800,5741.2,Prosser.Stor.Inst.~1Day.0.MANUAL,Prosser.Elev.Inst.~1Day.0.MANUAL,Prosser.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.075,0.4
-Stampede,,SC7,39.471,-120.103,5956,226500,5948.7,Stampede.Stor.Inst.~1Day.0.MANUAL,Stampede.Elev.Inst.~1Day.0.MANUAL,Stampede.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.075,0.75
+Boca,,SC7,39.383,-120.1,1682.8,Boca.Stor.Inst.0.Top of Gross Pool,Boca.Elev.Inst.0.Top of Gross Pool,Boca.Stor.Inst.~1Day.0.Calc-usgs,Boca.Elev.Inst.~1Day.0.MANUAL,Boca.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.85,0.75
+Martis Creek,,COE,39.3267,-120.113,5858.01,Martis Creek.Stor.Inst.0.Top of Gross Pool,Martis Creek.Elev.Inst.0.Top of Gross Pool,Martis Creek-Pool.Stor.Inst.~1Day.0.Calc-val,Martis Creek-Pool.Elev.Inst.~1Day.0.Calc-val,Martis Creek.Stor-Top Con.Inst.~1Day.0.Calc-val,0.85,0.4
+Prosser Creek,,SC7,39.3794,-120.137,5622,Prosser.Stor.Inst.0.Top of Gross Pool,Prosser.Elev.Inst.0.Top of Gross Pool,Prosser.Stor.Inst.~1Day.0.MANUAL,Prosser.Elev.Inst.~1Day.0.MANUAL,Prosser.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.075,0.4
+Stampede,,SC7,39.471,-120.103,5956,Stampede.Stor.Inst.0.Top of Gross Pool,Stampede.Elev.Inst.0.Top of Gross Pool,Stampede.Stor.Inst.~1Day.0.MANUAL,Stampede.Elev.Inst.~1Day.0.MANUAL,Stampede.Stor-Top Con.Inst.~1Day.0.Calc-manual,0.075,0.75
