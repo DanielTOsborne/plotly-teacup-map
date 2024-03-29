@@ -26,6 +26,23 @@ const ASPECT_RATIO_LANDSCAPE = {w: 1.348684, h: 1}; // This should match the asp
 // The geo map offsets the Y values, why?
 const GEO_MAP_OFFSET = 50;
 
+// The column header labels for the data file. Can be changed if desired.
+const CSV_HEADERS = {
+	LAKE_NAME: 'Name',
+	DAM_NAME: 'Dam Name',
+	OWNER: 'Owner',
+	GPS_LATITUDE: 'Latitude',
+	GPS_LONGITUDE: 'Longitude',
+	GPS_ELEVATION: 'Elevation',
+	GROSS_POOL_STORAGE: 'Gross Pool Storage',
+	GROSS_POOL_ELEVATION: 'Gross Pool Elevation',
+	CWMS_STORAGE: 'CWMS-Storage',
+	CWMS_ELEVATION: 'CWMS-Elevation',
+	CWMS_TCS: 'CWMS-TOC',
+	SUBPLOT_LOCATION_X: 'X',
+	SUBPLOT_LOCATION_Y: 'Y',
+}
+
 // Choose colors at https://www.w3schools.com/colors/colors_picker.asp
 // To use the plotly default, just set the value to null: e.g. `ANNOTATION_BG: null,`
 const COLOR = {
@@ -37,6 +54,22 @@ const COLOR = {
 	STORAGE: 'rgb(0,64,255)',
 	MISSING: 'rgb(148,77,255)',
 	ANNOTATION_BG: 'rgba(255,255,255,0.66)',
+}
+
+const CHART_LABELS = {
+	LEGEND: {
+		NO_DATA: 'No Data',
+		GROSS_POOL: 'Pool Capacity',
+		STORAGE: 'Storage (ac-ft)',
+		TOC_STORAGE: 'Top of Conservation',
+	},
+	STORAGE: 'Current Storage',
+	ELEVATION: 'Current Elevation',
+	GROSS_POOL_STORAGE: 'Gross Pool Storage',
+	GROSS_POOL_ELEVATION: 'Gross Pool Elevation',
+	TOC_STORAGE: 'Top of Conservation',
+	CAPACITY_FILLED: 'Capacity Filled',
+	ENCROACHMENT: 'Encroachment',
 }
 
 var CHART_BASE_CONFIG = 
@@ -131,15 +164,15 @@ var CHART_BASE_CONFIG =
 
 	// This is the popup text that appears when the mouse moves over a point on the map
 	map_hovertemplate: `<b>%{text}%{meta.dam}</b><br>
-	<em>Gross Pool Storage:</em> %{customdata.gross_stor:,.0f} %{customdata.gross_stor_units}<br>
-	<em>Current Storage:</em> %{customdata.stor} %{customdata.stor_units}<br>
-	<em>Top of Conservation:</em> %{customdata.toc} %{customdata.toc_units}<br>
+	<em>${CHART_LABELS.GROSS_POOL_STORAGE}:</em> %{customdata.gross_stor:,.0f} %{customdata.gross_stor_units}<br>
+	<em>${CHART_LABELS.STORAGE}:</em> %{customdata.stor} %{customdata.stor_units}<br>
+	<em>${CHART_LABELS.TOC_STORAGE}:</em> %{customdata.toc} %{customdata.toc_units}<br>
 	<br>
-	<em>Gross Pool Elevation:</em> %{customdata.gross_elev:,.2f} %{customdata.gross_elev_units}<br>
-	<em>Current Elevation:</em> %{customdata.elev} %{customdata.elev_units}<br>
+	<em>${CHART_LABELS.GROSS_POOL_ELEVATION}:</em> %{customdata.gross_elev:,.2f} %{customdata.gross_elev_units}<br>
+	<em>${CHART_LABELS.ELEVATION}:</em> %{customdata.elev} %{customdata.elev_units}<br>
 	<br>
-	<em>Capacity Filled:</em> %{customdata.fill}<br>
-	<em>Encroachment:</em> %{customdata.encroachment}<br>`
+	<em>${CHART_LABELS.CAPACITY_FILLED}:</em> %{customdata.fill}<br>
+	<em>${CHART_LABELS.ENCROACHMENT}:</em> %{customdata.encroachment}<br>`
 };
 
 const MAPS = {
@@ -608,7 +641,7 @@ async function buildPlotlyMap(plot_id) {
 			type: 'bar',
 			x: [0],
 			y: [0],
-			name: "Pool Capacity",
+			name: CHART_LABELS.LEGEND.GROSS_POOL,
 			marker: {
 				color: COLOR.POOL,
 			},
@@ -619,7 +652,7 @@ async function buildPlotlyMap(plot_id) {
 			type: 'bar',
 			x: [0],
 			y: [0],
-			name: "Storage (ac-ft)",
+			name: CHART_LABELS.LEGEND.STORAGE,
 			marker: {
 				color: COLOR.STORAGE,
 			},
@@ -632,7 +665,7 @@ async function buildPlotlyMap(plot_id) {
 			x: [0],
 			y: [0],
 			legendgroup: 'toc',
-			name: "Top of Conservation",
+			name: CHART_LABELS.LEGEND.TOC_STORAGE,
 			line: {
 				color: COLOR.TOC,
 			},
@@ -644,7 +677,7 @@ async function buildPlotlyMap(plot_id) {
 
 	d3.csv(`/extra/${location}_reservoirs.csv`, async function(err, rows) {
 		try {
-			var ownerArray = unpack(rows, 'Owner');
+			var ownerArray = unpack(rows, CSV_HEADERS.OWNER);
 			var owners = [...new Set(ownerArray)];
 		
 			function unpack(rows, key) {
@@ -662,14 +695,14 @@ async function buildPlotlyMap(plot_id) {
 
 					for(let row in rowsFiltered) {
 						meta.push({
-							dam: rowsFiltered[row]['Dam Name'] !== undefined && rowsFiltered[row]['Dam Name'] !== '' ? `&nbsp;&#8211;&nbsp;${rowsFiltered[row]['Dam Name']}` : "",
-							elev: rowsFiltered[row]['CWMS-Elevation'],
-							stor: rowsFiltered[row]['CWMS-Storage'],
-							toc: rowsFiltered[row]['CWMS-TOC'],
-							gross_elev: rowsFiltered[row]['Gross Pool Elevation'],
-							gross_stor: rowsFiltered[row]['Gross Pool Storage'],
-							x: rowsFiltered[row]['X'],
-							y: rowsFiltered[row]['Y'],
+							dam: rowsFiltered[row][CSV_HEADERS.DAM_NAME] !== undefined && rowsFiltered[row][CSV_HEADERS.DAM_NAME] !== '' ? `&nbsp;&#8211;&nbsp;${rowsFiltered[row][CSV_HEADERS.DAM_NAME]}` : "",
+							elev: rowsFiltered[row][CSV_HEADERS.CWMS_ELEVATION],
+							stor: rowsFiltered[row][CSV_HEADERS.CWMS_STORAGE],
+							toc: rowsFiltered[row][CSV_HEADERS.CWMS_TCS],
+							gross_elev: rowsFiltered[row][CSV_HEADERS.GROSS_POOL_ELEVATION],
+							gross_stor: rowsFiltered[row][CSV_HEADERS.GROSS_POOL_STORAGE],
+							x: rowsFiltered[row][CSV_HEADERS.SUBPLOT_LOCATION_X],
+							y: rowsFiltered[row][CSV_HEADERS.SUBPLOT_LOCATION_Y],
 						});
 					}
 					return meta;
@@ -678,13 +711,13 @@ async function buildPlotlyMap(plot_id) {
 				return {
 					type: `scatter${CHART_BASE_CONFIG.map}`,
 					name: owners,
-					text: unpack(rowsFiltered, 'Name'), 
-					lat: unpack(rowsFiltered, 'Latitude'),
-					lon: unpack(rowsFiltered, 'Longitude'),
+					text: unpack(rowsFiltered, CSV_HEADERS.LAKE_NAME), 
+					lat: unpack(rowsFiltered, CSV_HEADERS.GPS_LATITUDE),
+					lon: unpack(rowsFiltered, CSV_HEADERS.GPS_LONGITUDE),
 					hoverinfo: "text",
 					legendgroup: owners,
 					marker: {
-						color: unpack(rowsFiltered, 'Owner')[0] === "COE" ? COLOR.MARKER_COE : COLOR.MARKER_SC7,
+						color: unpack(rowsFiltered, CSV_HEADERS.OWNER)[0] === "COE" ? COLOR.MARKER_COE : COLOR.MARKER_SC7,
 						size: 10,
 					},
 					customdata: [],  // Will be filled in later
@@ -700,7 +733,7 @@ async function buildPlotlyMap(plot_id) {
 			var datetime = null;
 
 			for(let x = 0; x < rows.length; x++) {
-				let owner = rows[x]['Owner'];
+				let owner = rows[x][CSV_HEADERS.OWNER];
 				let map_points = data[0];
 				for(let o = 0; o < data.length; o++) {
 					if(data[o].name === owner) {
@@ -709,14 +742,14 @@ async function buildPlotlyMap(plot_id) {
 					}
 				}
 
-				let stor = getTimeseriesCDA(rows[x]['CWMS-Storage'], date, CHART_BASE_CONFIG.location[location].tz);
-				let elev = getTimeseriesCDA(rows[x]['CWMS-Elevation'], date, CHART_BASE_CONFIG.location[location].tz);
-				let toc = getTimeseriesCDA(rows[x]['CWMS-TOC'], date, CHART_BASE_CONFIG.location[location].tz);
+				let stor = getTimeseriesCDA(rows[x][CSV_HEADERS.CWMS_STORAGE], date, CHART_BASE_CONFIG.location[location].tz);
+				let elev = getTimeseriesCDA(rows[x][CSV_HEADERS.CWMS_ELEVATION], date, CHART_BASE_CONFIG.location[location].tz);
+				let toc = getTimeseriesCDA(rows[x][CSV_HEADERS.CWMS_TCS], date, CHART_BASE_CONFIG.location[location].tz);
 
 				// The units are hardcoded here to speed up the queries. This will be validated below.
 				// Waiting for getTimeseriesCDA results before fetching locations with the units increases loading time by about 50%.
-				let gross_stor = getLevel(rows[x]['Gross Pool Storage'], date, CHART_BASE_CONFIG.location[location].tz, "ac-ft");
-				let gross_elev = getLevel(rows[x]['Gross Pool Elevation'], date, CHART_BASE_CONFIG.location[location].tz, "ft");
+				let gross_stor = getLevel(rows[x][CSV_HEADERS.GROSS_POOL_STORAGE], date, CHART_BASE_CONFIG.location[location].tz, "ac-ft");
+				let gross_elev = getLevel(rows[x][CSV_HEADERS.GROSS_POOL_ELEVATION], date, CHART_BASE_CONFIG.location[location].tz, "ft");
 
 				let stor_missing = false;
 				let toc_missing = false;
@@ -736,16 +769,16 @@ async function buildPlotlyMap(plot_id) {
 
 				// Check if the units match, and refetch if not
 				if(gross_elev_result.units != elev_result.units) {
-					gross_elev = getLevel(rows[x]['Gross Pool Elevation'], date, CHART_BASE_CONFIG.location[location].tz, elev_result.units);
+					gross_elev = getLevel(rows[x][CSV_HEADERS.GROSS_POOL_ELEVATION], date, CHART_BASE_CONFIG.location[location].tz, elev_result.units);
 					gross_elev_result = await gross_elev.then( (v) => v );
 				}
 				if(gross_stor_result.units != stor_result.units) {
-					gross_stor = getLevel(rows[x]['Gross Pool Storage'], date, CHART_BASE_CONFIG.location[location].tz, stor_result.units);
+					gross_stor = getLevel(rows[x][CSV_HEADERS.GROSS_POOL_STORAGE], date, CHART_BASE_CONFIG.location[location].tz, stor_result.units);
 					gross_stor_result = await gross_elev.then( (v) => v );
 				}
 
 				let diff = stor_result.datetime - toc_result.datetime;
-				console.debug(`${rows[x]['Name']} diff: ${diff}`);
+				console.debug(`${rows[x][CSV_HEADERS.LAKE_NAME]} diff: ${diff}`);
 
 				// If it's null, there is supposed to be a TOC, but it hasn't computed for the requested date. Shows "Unavailable" on popup.
 				// If the value is undefined, there is no TOC for this reservoir (e.g. Farmington). Shows "N/A" on popup.
@@ -774,12 +807,12 @@ async function buildPlotlyMap(plot_id) {
 					// x: [new Date(stor_result.datetime)],
 					y: [gross_stor_result.value],
 					width: 0.9,
-					name: rows[x]['Name'],
+					name: rows[x][CSV_HEADERS.LAKE_NAME],
 					marker: {
 						color: COLOR.POOL,
 					},
 					meta: {
-						name: 'Gross Pool Storage',
+						name: CHART_LABELS.GROSS_POOL_STORAGE,
 						unit: stor_result.units,
 						datetime: new Date(stor_result.datetime ),
 					},
@@ -797,17 +830,17 @@ async function buildPlotlyMap(plot_id) {
 					x: [0],
 					// x: [new Date(stor_result.datetime)],
 					y: [stor_missing ? gross_stor_result.value : stor_result.value],
-					name: rows[x]['Name'],
+					name: rows[x][CSV_HEADERS.LAKE_NAME],
 					marker: {
 						color: stor_missing ? COLOR.MISSING : COLOR.STORAGE,
 					},
 					meta: {
-						name: 'Current Storage',
+						name: CHART_LABELS.STORAGE,
 						gross_stor: gross_stor_result.value,
 						toc: toc_result.value,
 						unit: toc_result.units,
-						x: parseFloat(rows[x]['X']),
-						y: parseFloat(rows[x]['Y']),
+						x: parseFloat(rows[x][CSV_HEADERS.SUBPLOT_LOCATION_X]),
+						y: parseFloat(rows[x][CSV_HEADERS.SUBPLOT_LOCATION_Y]),
 						datetime: new Date(stor_result.datetime),
 					},
 					showlegend: false,
@@ -835,9 +868,9 @@ async function buildPlotlyMap(plot_id) {
 						width: 2,
 					},
 					legendgroup: 'toc',
-					name: rows[x]['Name'],
+					name: rows[x][CSV_HEADERS.LAKE_NAME],
 					meta: {
-						name: 'Top of Conservation',
+						name: CHART_LABELS.TOC_STORAGE,
 						unit: toc_result.units,
 						datetime: new Date(stor_result.datetime),  // Use storage date, so the bars are always aligned
 					},
@@ -883,7 +916,7 @@ async function buildPlotlyMap(plot_id) {
 					type: 'bar',
 					x: [0],
 					y: [0],
-					name: "No Data",
+					name: CHART_LABELS.LEGEND.NO_DATA,
 					marker: {
 						color: COLOR.MISSING,
 					},
